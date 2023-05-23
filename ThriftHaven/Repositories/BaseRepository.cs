@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace BurnHub.Repositories;
+namespace ThriftHaven.Repositories;
 
 public abstract class BaseRepository
 {
