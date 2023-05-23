@@ -10,5 +10,8 @@
         public string Description { get; set; }
         public string Image { get; set; }
         public DateTime DateTime { get; set; }
+        public Favorite? Favorite { get; set; }
+
+        public Category? Category { get; set; }
     }
 }
