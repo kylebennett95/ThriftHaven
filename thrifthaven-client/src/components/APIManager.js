@@ -20,7 +20,7 @@ export const FetchListing = async (listingId) => {
     const listingsArray = await response.json();
     return listingsArray
 }
-
+//look
 export const FetchListingsBySearch = async (criterion) => {
     const response = await fetch(`https://localhost:7052/Listings/?searchCriterion=${criterion}`)
     const listingsArray = await response.json()
@@ -68,7 +68,7 @@ export const GetCategories = async () => {
     const categories = await response.json()
     return categories
 }
-
+//look at this one
 export const FetchListingsByCategory = async(categoryId) => {
     const response = await fetch(`https://localhost:7052/Items/?categoryId=${categoryId}`);
     const listingsByCategoryArray = await response.json();
