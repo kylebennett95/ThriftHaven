@@ -36,7 +36,7 @@ CREATE TABLE [User] (
 	[name] nvarchar(255) not null,
 	[email] nvarchar(255) not null,
 	[image] nvarchar(255),
-	[password] nvarchar(255) not null
+	[password] text(255) not null
 )
 GO
 ALTER TABLE [favorite] ADD FOREIGN KEY ([listingId]) REFERENCES [listing] ([id])

@@ -1,6 +1,8 @@
 ﻿using ThriftHaven.Models;
 using ThriftHaven.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThriftHaven.Controllers
 {
@@ -15,7 +17,7 @@ namespace ThriftHaven.Controllers
             _userRepo = userRepo;
         }
 
-        [HttpGet]
+        [HttpGet("Login/{email}/{password}")]
         public IActionResult Get()
         {
             return Ok(_userRepo.GetAll());
