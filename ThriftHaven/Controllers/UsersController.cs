@@ -18,9 +18,24 @@ namespace ThriftHaven.Controllers
         }
 
         [HttpGet("Login/{email}/{password}")]
-        public IActionResult Get()
+        public IActionResult LoginUser(string email, string password)
         {
-            return Ok(_userRepo.GetAll());
+            User user = _userRepo.ValidateUser(email);
+
+            if(user == null)
+            {
+                return Unauthorized("Invalid Credentials");
+            }
+
+            if(!BCrypt.Net.BCrypt.Verify(password, user.Password))
+            {
+                return Unauthorized("Invalid Credentials");
+            }
+            else
+            {
+                user.Password = "";
+                return Ok(user);
+            }
         }
 
         [HttpGet("{id}")]
@@ -34,14 +49,36 @@ namespace ThriftHaven.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public IActionResult Post(User user)
+        [HttpPost("/AddUser")]
+        public IActionResult AddUser(User user)
         {
-            _userRepo.Add(user);
-            return CreatedAtAction("Get", new { id = user.Id }, user);
+            if (user == null)
+            {
+                return BadRequest(new { message = "Missing User Data"});
+            }
+
+            var isValidEmail = _userRepo.isEmailAvailable(user.Email);
+
+            if (isValidEmail == false) 
+            {
+                return BadRequest(new { message = "Email already exists" });
+            }
+
+            var newUser = new User
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Image = user.Image,
+                Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
+            };
+
+            _userRepo.Add(newUser);
+
+            newUser.Password = "";
+            return Created("", newUser);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/EditUser/{id}")]
         public IActionResult Put(int id, User user)
         {
             if (id != user.Id)
@@ -50,13 +87,6 @@ namespace ThriftHaven.Controllers
             }
 
             _userRepo.Update(user);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _userRepo.Delete(id);
             return NoContent();
         }
     }

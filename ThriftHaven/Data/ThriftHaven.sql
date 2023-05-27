@@ -36,7 +36,7 @@ CREATE TABLE [User] (
 	[name] nvarchar(255) not null,
 	[email] nvarchar(255) not null,
 	[image] nvarchar(255),
-	[password] text(255) not null
+	[password] text not null
 )
 GO
 ALTER TABLE [favorite] ADD FOREIGN KEY ([listingId]) REFERENCES [listing] ([id])
@@ -47,6 +47,11 @@ ALTER TABLE [listing] ADD FOREIGN KEY (userId) REFERENCES [user] ([id])
 GO
 ALTER TABLE [listing] ADD FOREIGN KEY (categoryId) REFERENCES [category] ([id])
 GO
+ALTER TABLE [listing] ADD CONSTRAINT FK_Listing FOREIGN KEY (userId) REFERENCES [user] ([id]) ON DELETE CASCADE;
+GO
+ALTER TABLE [favorite] ADD CONSTRAINT FK_Favorite FOREIGN KEY (userId) REFERENCES [user] ([id]) ON DELETE CASCADE;
+GO
+
 --STARTING DATA--
 INSERT INTO [Category] 
 			([name])
