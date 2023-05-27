@@ -137,16 +137,53 @@ namespace ThriftHaven.Repositories
             }
         }
 
-        public void Delete(int id)
+        public Boolean isEmailAvailable(string Email)
         {
             using (var conn = Connection)
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM [User] WHERE id = @id";
-                    DbUtils.AddParameter(cmd, "@id", id);
-                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = @"SELECT id FROM [User] WHERE email=@Email";
+                    DbUtils.AddParameter(cmd, "@Email", Email);
+
+                    var reader = cmd.ExecuteReader();
+
+                    var isValid = reader.HasRows == false;
+
+                    return isValid;
+                }
+            }
+        }
+
+        public User ValidateUser(string email)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT * from [dbo].[User]
+                                        WHERE Email = @Email";
+                    DbUtils.AddParameter(cmd, "@Email", email);
+                    var reader = cmd.ExecuteReader();
+                    User user = null;
+                    while (reader.Read())
+                    {
+                        if (user == null)
+                        {
+                            user = new User()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                Password = DbUtils.GetString(reader, "Password"),
+                                Image = DbUtils.GetString(reader, "Image"),
+                            };
+                        }
+                    }
+                    reader.Close();
+                    return user;
                 }
             }
         }

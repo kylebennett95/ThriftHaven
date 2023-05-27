@@ -50,12 +50,5 @@ namespace ThriftHaven.Controllers
             _categoryRepo.Add(category);
             return NoContent();
         }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _categoryRepo.Delete(id);
-            return NoContent();
-        }
     }
 }

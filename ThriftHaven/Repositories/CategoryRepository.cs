@@ -111,19 +111,5 @@ namespace ThriftHaven.Repositories
                 }
             }
         }
-
-        public void Delete(int id)
-        {
-            using (var connection = Connection)
-            {
-                connection.Open();
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "DELETE FROM [Category] WHERE id = @id";
-                    DbUtils.AddParameter(command, "@id", id);
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
     }
 }
