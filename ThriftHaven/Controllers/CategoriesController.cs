@@ -15,7 +15,7 @@ namespace ThriftHaven.Controllers
             _categoryRepo = categoryRepo;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IActionResult Get()
         {
             return Ok(_categoryRepo.GetAll());
@@ -39,7 +39,7 @@ namespace ThriftHaven.Controllers
             return CreatedAtAction("Get", new { id = category.Id }, category);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("post/{id}")]
         public IActionResult Put(int id, Category category) 
         {
             if (id != category.Id)
@@ -48,7 +48,7 @@ namespace ThriftHaven.Controllers
             }
 
             _categoryRepo.Add(category);
-            return NoContent();
+            return Ok(category);
         }
     }
 }

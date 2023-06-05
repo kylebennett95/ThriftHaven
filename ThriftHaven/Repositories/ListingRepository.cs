@@ -7,6 +7,50 @@ namespace ThriftHaven.Repositories
     {
         public ListingRepository(IConfiguration configuration) : base(configuration) { }
 
+        public List<Listing> GetAll()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT
+                                        id,
+	                                    userId,
+	                                    categoryId,
+	                                    location,
+	                                    price,
+	                                    description,
+	                                    image,
+                                        dateTime
+                                    FROM [Listing]";
+
+                    var reader = cmd.ExecuteReader();
+                    var listings = new List<Listing>();
+
+                    while (reader.Read())
+                    {
+                        var listing = new Listing()
+                        {
+                            Id = DbUtils.GetInt(reader, "id"),
+                            UserId = DbUtils.GetInt(reader, "userId"),
+                            CategoryId = DbUtils.GetInt(reader, "categoryId"),
+                            Location = DbUtils.GetString(reader, "location"),
+                            Price = DbUtils.GetInt(reader, "price"),
+                            Description = DbUtils.GetString(reader, "description"),
+                            Image = DbUtils.GetString(reader, "image"),
+                            DateTime = DbUtils.GetDateTime(reader, "dateTime")
+                        };
+
+                        listings.Add(listing);
+                    }
+
+                    reader.Close();
+                    return listings;
+                }
+            }
+        }
+
         public List<Listing> Search(string criterion)
         {
             using (var conn = Connection)
@@ -54,7 +98,7 @@ namespace ThriftHaven.Repositories
             }
         }
 
-        public List<Listing> GetAll(string? categoryIds = null, string? searchCriterion = null)
+        public List<Listing> GetAllByCategoryId(string? categoryIds = null, string? searchCriterion = null)
         {
             using (var conn = Connection)
             {
@@ -62,14 +106,36 @@ namespace ThriftHaven.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     var sql = @"SELECT
-                                    id,
-                                    userId,
-                                    categoryId,
-                                    location,
-                                    price,
-                                    description,
-                                    image,
-                                    dateTime";
+                                    l.id,
+                                    l.userId,
+                                    l.categoryId,
+                                    l.location,
+                                    l.price,
+                                    l.description,
+                                    l.image,
+                                    l.dateTime,
+                                    c.name as categoryName
+                                FROM Listing l
+                                JOIN Category c
+                                    ON l.categoryId = c.id";
+
+                    if (!string.IsNullOrEmpty(categoryIds))
+                    {
+                        var ids = categoryIds.Split(',').Select(id => int.Parse(id)).ToList();
+                        var where = "WHERE l.categoryId IN ({0})";
+                        var formattedIds = string.Join(",", ids);
+                        sql += string.Format(where, formattedIds);
+                    }
+
+                    if (!string.IsNullOrEmpty(searchCriterion))
+                    {
+                        sql += "WHERE l.name LIKE @Criterion";
+                    }
+
+                    cmd.CommandText = sql;
+
+                    DbUtils.AddParameter(cmd, "@categoryId", categoryIds);
+                    DbUtils.AddParameter(cmd, "@Criterion", $"%{searchCriterion}%");
 
                     var reader = cmd.ExecuteReader();
                     var listings = new List<Listing>();
@@ -85,7 +151,12 @@ namespace ThriftHaven.Repositories
                             Price = DbUtils.GetInt(reader, "price"),
                             Description = DbUtils.GetString(reader, "description"),
                             Image = DbUtils.GetString(reader, "image"),
-                            DateTime = DbUtils.GetDateTime(reader, "dateTime")
+                            DateTime = DbUtils.GetDateTime(reader, "dateTime"),
+                            Category = new Category()
+                            {
+                                Id = DbUtils.GetInt(reader, "categoryId"),
+                                Name = DbUtils.GetString(reader, "categoryName"),
+                            }
                         };
 
                         listings.Add(listing);

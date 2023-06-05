@@ -33,11 +33,11 @@ namespace ThriftHaven.Controllers
             return CreatedAtAction("Get", new { id = favorite.Id }, favorite);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Delete(int id)
         {
             _favoriteRepo.Delete(id);
-            return NoContent();
+            return Ok(id);
         }
     }
 }

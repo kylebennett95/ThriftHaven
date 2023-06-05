@@ -38,6 +38,12 @@ export const UpdateListing = async (id, listing) => {
     await fetch(`https://localhost:7052/Listings/${id}`, options)
 }
 
+export const FetchUserById = async (uid) => {
+    const response = await fetch(`https://localhost:7052/Users/${uid}`)
+    const user = await response.json();
+    return user
+}
+
 export const AddUser = async (userObj) => {
     // event.preventDefault()
 

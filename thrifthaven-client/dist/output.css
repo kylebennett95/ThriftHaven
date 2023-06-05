@@ -1936,7 +1936,12 @@ code {
 
   .md\:text-blue-700 {
     --tw-text-opacity: 1;
-    color: rgb(26 86 219 / var(--tw-text-opacity));
+    color: rgb(0 123 255 / var(--tw-text-opacity));
+  }
+
+  .md\:bg-yellow-700 {
+    --tw-text-opacity: 1;
+    color: rgb(255 193 7 / var(--tw-bg-opacity));
   }
 
   .md\:hover\:bg-transparent:hover {
