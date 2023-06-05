@@ -6,7 +6,8 @@ namespace ThriftHaven.Repositories
     {
         void Add(Listing listing);
         void Delete(int id);
-        List<Listing> GetAll(string? categoryIds = null, string? searchCriterion = null);
+        List<Listing> GetAll();
+        List<Listing> GetAllByCategoryId(string? categoryIds = null, string? searchCriterion = null);
         List<Listing> GetByCategoryId(int id);
         Listing GetById(int id);
         List<Listing> Search(string criterion);

@@ -15,19 +15,25 @@ namespace ThriftHaven.Controllers
             _listingRepo = listingRepo;
         }
 
+        [HttpGet("GetAll")]
+        public IActionResult Get()
+        {
+            return Ok(_listingRepo.GetAll());
+        }
+
         [HttpGet("search")]
         public ActionResult Search(string q) 
         {
             return Ok(_listingRepo.Search(q));
         }
 
-        [HttpGet]
-        public ActionResult GetAll(string? categoryIds = null, string? searchCriterion = null) 
+        [HttpGet("GetAllByCategory")]
+        public ActionResult GetAllByCategoryId(string? categoryIds = null, string? searchCriterion = null) 
         {
-            return Ok(_listingRepo.GetAll(categoryIds, searchCriterion));
+            return Ok(_listingRepo.GetAllByCategoryId(categoryIds, searchCriterion));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public ActionResult Get(int id) 
         {
             var listing = _listingRepo.GetById(id);
@@ -51,7 +57,7 @@ namespace ThriftHaven.Controllers
             return CreatedAtAction("Get", new { id = listing.Id }, listing);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Put(int id, Listing listing) 
         {
             if (id != listing.Id)
@@ -60,14 +66,14 @@ namespace ThriftHaven.Controllers
             }
 
             _listingRepo.Update(listing);
-            return NoContent();
+            return Ok(listing);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("delete/{id}")]
         public IActionResult Delete(int id)
         {
             _listingRepo.Delete(id);
-            return NoContent();
+            return Ok(id);
         }
     }
 }

@@ -78,7 +78,7 @@ namespace ThriftHaven.Controllers
             return Created("", newUser);
         }
 
-        [HttpPut("/EditUser/{id}")]
+        [HttpPost("/EditUser/{id}")]
         public IActionResult Put(int id, User user)
         {
             if (id != user.Id)
@@ -87,7 +87,7 @@ namespace ThriftHaven.Controllers
             }
 
             _userRepo.Update(user);
-            return NoContent();
+            return Ok(user);
         }
     }
 }

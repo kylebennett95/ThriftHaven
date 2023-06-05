@@ -137,6 +137,7 @@ namespace ThriftHaven.Repositories
             }
         }
 
+        //-----------Check if Email already exists------------
         public Boolean isEmailAvailable(string Email)
         {
             using (var conn = Connection)
@@ -156,6 +157,7 @@ namespace ThriftHaven.Repositories
             }
         }
 
+        //-----------Validate User------------
         public User ValidateUser(string email)
         {
             using (var conn = Connection)

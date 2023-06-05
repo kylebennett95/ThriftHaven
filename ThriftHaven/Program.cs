@@ -14,7 +14,22 @@ builder.Services.AddTransient<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddTransient<IListingRepository, ListingRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
+builder.Services.AddCors(options =>
+            options.AddPolicy("ThriftHavenPolicy",
+            builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyMethod();
+            }));
+
 var app = builder.Build();
+
+app.UseCors(policy => policy.AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
+app.UseCors("ThriftHavenPolicy");
 
 if (app.Environment.IsDevelopment())
 {
