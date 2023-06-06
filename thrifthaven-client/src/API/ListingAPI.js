@@ -9,7 +9,7 @@ export const GetListings = async() => {
     const response = await fetch(
         `https://localhost:7052/Listings/GetAll`,GetConfig);
 
-    
+    console.log(response)
     if(response.ok){
         const listings = await response.json();
         return listings;
