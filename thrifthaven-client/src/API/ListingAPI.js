@@ -19,6 +19,27 @@ export const GetListings = async() => {
     
 }
 
+export const AddListing = async (listingData) => {
+    const response = await fetch(`https://localhost:7052/Listings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(listingData)
+    });
+  
+    console.log(response);
+    if (response.ok) {
+      const newListing = await response.json();
+      return newListing;
+    } else {
+      return false;
+    }
+  };
+  
+
+
+
 const API = {
     GetListings
 }
