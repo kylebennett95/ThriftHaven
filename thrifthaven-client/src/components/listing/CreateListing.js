@@ -2,55 +2,63 @@ import React, { useState, useEffect } from "react";
 import { AddListing } from "../../API/ListingAPI";
 
 export const CreateListing = () => {
-    const [userId, setUserId] = useState(null);
-    const [image, setImage] = useState('');
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState('');
-    const [categoryId, setCategoryId] = useState(0);
-    const [location, setLocation] = useState('');
-    const [dateTime, setDateTime] = useState('');
+  const [userId, setUserId] = useState(null); // Initialize userId state as null
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
+  const [categoryId, setCategoryId] = useState(0);
+  const [location, setLocation] = useState("");
+  const [dateTime, setDateTime] = useState("");
+  
 
-    useEffect(() => {
-        // Retrieve userId from local storage
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-          setUserId(storedUserId);
-        }
+  useEffect(() => {
+    const projUser = localStorage.getItem("project_user");
+    const projUserObject = JSON.parse(projUser);
 
-        // Set the current date and time as the initial value for dateTime
+    // Retrieve userId from local storage
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+
+    // Set the current date and time as the initial value for dateTime
     setDateTime(new Date().toISOString());
-      }, []);
+    
+    // Assign the value of projUserObject to userId state
+    if (projUserObject) {
+      setUserId(projUserObject.userId);
+    }
+  }, []);
 
-
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
     
-        const listingData = {
-          userId,
-          image,
-          price: parseInt(price),
-          description,
-          categoryId: parseInt(categoryId),
-          location,
-          dateTime
-        };
+    const listingData = {
+      userId,
+      image,
+      price: parseInt(price),
+      description,
+      categoryId: parseInt(categoryId),
+      location,
+      dateTime
+    };
     
-        const newListing = await AddListing(listingData);
+    const newListing = await AddListing(listingData);
     
-        if (newListing) {
-          // Listing added successfully
-          console.log(newListing);
-          // Reset form fields
-          setImage('');
-          setPrice('');
-          setDescription('');
-          setCategoryId('');
-          setLocation('');
-        } else {
-          // Failed to add listing
-          console.log('Failed to add listing');
-        }
-      };
+    if (newListing) {
+      // Listing added successfully
+      console.log(newListing);
+      // Reset form fields
+      setImage("");
+      setPrice(0);
+      setDescription("");
+      setCategoryId(0);
+      setLocation("");
+    } else {
+      // Failed to add listing
+      console.log("Failed to add listing");
+    }
+  };
 
 
 
