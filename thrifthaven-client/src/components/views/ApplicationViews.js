@@ -1,39 +1,38 @@
+import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
-import { Home } from "../home/Home";
 import { NavBar } from "../nav/NavBar";
+import { Home } from "../home/Home";
 import { Favorites } from "../favorites/Favorites";
 import { CreateListing } from "../listing/CreateListing";
 import { Profile } from "../profile/Profile";
 import { MyListings } from "../listing/MyListings";
+import { ListingPage } from "../listing/ListingPage";
+import { EditListing } from "../listing/EditListing";
 
 export const ApplicationViews = () => {
-    const localUser = localStorage.getItem("user")
-    const currentUser = JSON.parse(localUser)
-
+    const localUser = localStorage.getItem("project_user");
+    const currentUser = JSON.parse(localUser);
+  
     return (
+      <>
+        <NavBar />
         <Routes>
-            <Route path ="/" element={
-                <>
-                    <NavBar />
-                    <Outlet />
-                </>
-            }>
-            <Route path="/" element={ <Home /> } />
-            <Route path="favorites" element={ <Favorites /> } />
-            <Route path="mylistings" element={ <MyListings />} />
-            <Route path="newlisting" element={ <CreateListing /> } />
-            {
-                currentUser
-                    ? <>
-                        <Route path="profile" element={<Profile />} />
-                    </>
-                    : ""
-            }
-            </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="favorites" element={<Favorites />} />
+          <Route path="newlisting" element={<CreateListing />} />
+          {currentUser && (
+            <Route path="mylistings" element={<MyListings />} />
+          )}
+          {currentUser && (
+            <Route path="editlisting/:id" element={<EditListing />} />
+          )}
+          <Route path="/listing/:id" element={<ListingPage />} />
+          <Route path="profile" element={<Profile />} />
         </Routes>
-    )
+      </>
+    );
+  };
+  
+  
+  
 
-
-
-
-};

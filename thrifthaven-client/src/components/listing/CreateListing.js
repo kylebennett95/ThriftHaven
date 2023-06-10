@@ -54,6 +54,9 @@ export const CreateListing = () => {
       setDescription("");
       setCategoryId(0);
       setLocation("");
+
+      // Redirect to a different page
+      window.location.href = "/";
     } else {
       // Failed to add listing
       console.log("Failed to add listing");
