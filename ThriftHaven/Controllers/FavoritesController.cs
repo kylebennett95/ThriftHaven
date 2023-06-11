@@ -26,8 +26,8 @@ namespace ThriftHaven.Controllers
             return Ok(fav);
         }
 
-        [HttpPost]
-        public IActionResult Post(Favorite favorite)
+        [HttpPost("/Add")]
+        public IActionResult Post(FavoriteAdd favorite)
         {
             _favoriteRepo.Add(favorite);
             return CreatedAtAction("Get", new { id = favorite.Id }, favorite);

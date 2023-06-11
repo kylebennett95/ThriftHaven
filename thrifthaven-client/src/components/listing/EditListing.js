@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EditListingById } from '../../API/ListingAPI';
 import { GetListingById } from '../../API/ListingAPI';
+import { DeleteListing } from '../../API/ListingAPI';
 
 export const EditListing = () => {
   const { id } = useParams(); // Get the id from the URL
@@ -17,9 +18,28 @@ export const EditListing = () => {
 
   const UpdateListing = async () => {
     let UpdateListingData = await EditListingById(id, categoryId, location, price, description, image);
-    if(UpdateListingData !== false){
+    if (UpdateListingData !== false) {
+      // Handle success, e.g., show a success message
+      console.log('Listing updated successfully.');
+      window.location.href = '/'; // Replace '/some-other-url' with the desired URL
+    } else {
+      // Handle failure, e.g., show an error message
+      console.log('Failed to update listing.');
     }
-}
+  };
+
+const handleDelete = async () => {
+  const isSuccess = await DeleteListing(id);
+  if (isSuccess) {
+    // Handle success, e.g., show a success message
+    console.log('Listing deleted successfully.');
+    window.location.href = '/'; // Replace '/some-other-url' with the desired URL
+  } else {
+    // Handle failure, e.g., show an error message
+    console.log('Failed to delete listing.');
+  }
+};
+
 
 const GetListing = async () => {
   let ListingData = await GetListingById(id);
@@ -32,11 +52,6 @@ const GetListing = async () => {
   setCategoryId(ListingData[0].categoryId)
   setLocation(ListingData[0].location)
   }
-  // setImage(ListingData.image)
-  // setPrice(ListingData.price)
-  // setDescription(ListingData.description)
-  // setCategoryId(ListingData.categoryId)
-  // setLocation(ListingData.location)
 
   console.log(ListingData)
 }
@@ -134,6 +149,13 @@ useEffect(() => {
               >
                 Edit Listing
               </button>
+              <button
+  type="button"
+  className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+  onClick={() => handleDelete()}
+>
+  Delete Listing
+</button>
             </div>
            )}
         </div>

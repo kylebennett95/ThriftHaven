@@ -61,23 +61,6 @@ export const AddListing = async (listingData) => {
     }
   };
 
-  // export const EditListingById = async (id, listingData) => {
-  //   const response = await fetch(`https://localhost:7052/Listings/${id}`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(listingData)
-  //   });
-  
-  //   console.log(response, "EditListing");
-  //   if (response.ok) {
-  //     const editedListing = await response.json();
-  //     return editedListing;
-  //   } else {
-  //     return false;
-  //   }
-  // };
 
   export const EditListingById = async(Id, CategoryId, Location, Price, Description, Image) => {
     const response = await fetch(
@@ -91,7 +74,22 @@ export const AddListing = async (listingData) => {
     }   
 }
   
-  
+export const DeleteListing = async (id) => {
+  const response = await fetch(`https://localhost:7052/Listings/delete/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  console.log(response, "DeleteListing");
+  if (response.ok) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 
 
 
@@ -99,7 +97,8 @@ const API = {
     GetListings,
     AddListing,
     GetListingById,
-    EditListingById
+    EditListingById,
+    DeleteListing
 }
 
 export default API;
