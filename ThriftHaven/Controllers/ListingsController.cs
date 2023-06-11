@@ -58,7 +58,7 @@ namespace ThriftHaven.Controllers
         }
 
         [HttpPost("{id}")]
-        public IActionResult Put(int id, Listing listing) 
+        public IActionResult Put(int id, ListingEdit listing) 
         {
             if (id != listing.Id)
             {

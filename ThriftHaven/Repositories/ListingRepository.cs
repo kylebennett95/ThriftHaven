@@ -168,7 +168,7 @@ namespace ThriftHaven.Repositories
             }
         }
 
-        public Listing GetById(int id)
+        public ListingEdit GetById(int id)
         {
             using (var conn = Connection)
             {
@@ -177,32 +177,28 @@ namespace ThriftHaven.Repositories
                 {
                     cmd.CommandText = @"SELECT
                                             id,
-                                            userId,
                                             categoryId,
                                             location,
                                             price,
                                             description,
-                                            image,
-                                            dateTime
+                                            image
                                         FROM [Listing]
                                         WHERE id = @id";
                     DbUtils.AddParameter(cmd, "@id", id);
 
                     var reader = cmd.ExecuteReader();
 
-                    Listing listing = null;
+                    ListingEdit listing = null;
                     if (reader.Read())
                     {
-                        listing = new Listing()
+                        listing = new ListingEdit()
                         {
                             Id = DbUtils.GetInt(reader, "id"),
-                            UserId = DbUtils.GetInt(reader, "userId"),
                             CategoryId = DbUtils.GetInt(reader, "categoryId"),
                             Location = DbUtils.GetString(reader, "location"),
                             Price = DbUtils.GetInt(reader, "price"),
                             Description = DbUtils.GetString(reader, "description"),
-                            Image = DbUtils.GetString(reader, "image"),
-                            DateTime = DbUtils.GetDateTime(reader, "dateTime")
+                            Image = DbUtils.GetString(reader, "image")
                         };
                     }
 
@@ -303,7 +299,7 @@ namespace ThriftHaven.Repositories
             }
         }
 
-        public void Update(Listing listing)
+        public void Update(ListingEdit listing)
         {
             using (var conn = Connection)
             {
@@ -311,23 +307,20 @@ namespace ThriftHaven.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE [Listing]
-                                            SET userId = @userId,
+                                            SET
                                                 categoryId = @categoryId,
                                                 location = @location,
                                                 price = @price,
                                                 description = @description,
-                                                image = @image,
-                                                dateTime = @dateTime,
+                                                image = @image
                                         WHERE id = @id";
 
                     DbUtils.AddParameter(cmd, "@id", listing.Id);
-                    DbUtils.AddParameter(cmd, "@userId", listing.UserId);
                     DbUtils.AddParameter(cmd, "@categoryId", listing.CategoryId);
                     DbUtils.AddParameter(cmd, "@location", listing.Location);
                     DbUtils.AddParameter(cmd, "@price", listing.Price);
                     DbUtils.AddParameter(cmd, "@description", listing.Description);
                     DbUtils.AddParameter(cmd, "@image", listing.Image);
-                    DbUtils.AddParameter(cmd, "@dateTime", listing.DateTime);
                     cmd.ExecuteNonQuery();
                 }
             }

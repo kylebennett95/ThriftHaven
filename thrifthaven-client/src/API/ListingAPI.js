@@ -3,6 +3,16 @@ const GetConfig = {
     headers: { "Content-Type": "application/json" },
   }
 
+const GetPostConfig = (body) => {
+  var config = {
+      body : JSON.stringify(body),
+      credentials: "include",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }
+    return config
+}
+
 
 export const GetListings = async() => {
 
@@ -50,6 +60,37 @@ export const AddListing = async (listingData) => {
       return false;
     }
   };
+
+  // export const EditListingById = async (id, listingData) => {
+  //   const response = await fetch(`https://localhost:7052/Listings/${id}`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(listingData)
+  //   });
+  
+  //   console.log(response, "EditListing");
+  //   if (response.ok) {
+  //     const editedListing = await response.json();
+  //     return editedListing;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+
+  export const EditListingById = async(Id, CategoryId, Location, Price, Description, Image) => {
+    const response = await fetch(
+        `https://localhost:7052/Listings/${Id}`, GetPostConfig({Id, CategoryId, Location, Price, Description, Image})
+        );
+    if(response.ok){
+        const EditListingResponse = await response.json();
+        return EditListingResponse;
+    }else {
+        return false
+    }   
+}
+  
   
 
 
@@ -57,7 +98,8 @@ export const AddListing = async (listingData) => {
 const API = {
     GetListings,
     AddListing,
-    GetListingById
+    GetListingById,
+    EditListingById
 }
 
 export default API;
