@@ -15,38 +15,28 @@ builder.Services.AddTransient<IListingRepository, ListingRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddCors(options =>
-            options.AddPolicy("ThriftHavenPolicy",
-            builder =>
-            {
-                builder.AllowAnyOrigin();
-                builder.AllowAnyMethod();
-                builder.AllowAnyMethod();
-            }));
+{
+    options.AddPolicy("ThriftHavenPolicy",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 
-app.UseCors(policy => policy.AllowAnyHeader()
-                .AllowAnyMethod()
-                .SetIsOriginAllowed(origin => true)
-                .AllowCredentials());
-app.UseCors("ThriftHavenPolicy");
+app.UseHttpsRedirection();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    app.UseCors(options =>
-    {
-        options.AllowAnyOrigin();
-        options.AllowAnyMethod();
-        options.AllowAnyHeader();
-    });
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseCors("ThriftHavenPolicy");
 
 app.MapControllers();
 

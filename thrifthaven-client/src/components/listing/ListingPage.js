@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GetListingById } from "../../API/ListingAPI";
 import { useParams } from "react-router-dom";
+import { AddFavorite } from "../../API/FavoriteAPI"; // Import the AddFavorite function
 
 export const ListingPage = () => {
   const [listingData, setListingData] = useState(null);
@@ -22,16 +23,40 @@ export const ListingPage = () => {
 
   console.log("Current listing data:", listingData);
 
-  if (!listingData) {
+  if (!listingData || listingData.length === 0) {
     return <div>Loading...</div>;
   }
 
-  const listing = listingData; // Update this line
+  const listing = listingData[0];
 
   const handleButtonClick = () => {
     const userId = "project_user"; // Replace with your actual user ID
     const linkTo = userId === listing.userId ? `/editlisting/${listing.id}` : `/listing/${listing.id}`;
     window.location.href = linkTo;
+  };
+
+  const handleAddToFavorites = async () => {
+    try {
+      const appUser = localStorage.getItem("project_user");
+      const appUserObject = JSON.parse(appUser);
+      
+      if (!appUserObject || !appUserObject.userId) {
+        console.log("User ID not available or in the expected format");
+        return;
+      }
+
+      const userId = appUserObject.userId;
+
+      const favoriteData = {
+        userId: userId,
+        listingId: listing.id
+      };
+
+      const newFavorite = await AddFavorite(favoriteData);
+      console.log("Added to favorites:", newFavorite);
+    } catch (error) {
+      console.log("Error adding to favorites:", error);
+    }
   };
 
   return (
@@ -43,11 +68,15 @@ export const ListingPage = () => {
         <p>Description: {listing.description}</p>
         <p>Date and Time: {listing.dateTime}</p>
         <button onClick={handleButtonClick}>Go to Listing</button>
+        <button onClick={handleAddToFavorites}>Add to Favorites</button>
         <hr />
       </div>
     </div>
   );
 };
+
+
+
 
 
 

@@ -4,8 +4,8 @@ namespace ThriftHaven.Repositories
 {
     public interface IFavoriteRepository
     {
-        void Add(Favorite favorite);
+        void Add(FavoriteAdd favorite);
         void Delete(int id);
-        Listing GetFavoritesByUserId(int id);
+        List<Favorite> GetFavoritesByUserId(int id);
     }
 }

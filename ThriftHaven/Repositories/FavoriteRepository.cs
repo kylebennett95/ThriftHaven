@@ -7,64 +7,50 @@ namespace ThriftHaven.Repositories
     {
         public FavoriteRepository(IConfiguration configuration) : base(configuration) { }
 
-        public Listing GetFavoritesByUserId(int id)
+        public List<Favorite> GetFavoritesByUserId(int id)
         {
+            var favorites = new List<Favorite>();
+
             using (var conn = Connection)
             {
                 conn.Open();
+
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT
-                                        f.id,
-	                                    f.listingId,
-	                                    f.userId,
-                                        l.userId,
-                                        l.categoryId,
-	                                    l.location,
-                                        l.price,
-                                        l.description,
-                                        l.Image,
-                                        l.dateTime
-                                    FROM [Favorite] f
-                                    JOIN [Listing] l
-	                                    ON l.userId = f.userId
-                                    WHERE l.userId = @id";
+                                f.id AS FavoriteId,
+                                f.listingId,
+                                f.userId
+                            FROM [Favorite] f
+                            WHERE f.userId = @id";
+
                     DbUtils.AddParameter(cmd, "@id", id);
 
                     var reader = cmd.ExecuteReader();
 
-                    Listing listing = null;
                     while (reader.Read())
                     {
-                        if (listing == null)
+                        var favorite = new Favorite
                         {
-                            listing = new Listing()
-                            {
-                                Id = DbUtils.GetInt(reader, "id"),
-                                UserId = DbUtils.GetInt(reader, "userId"),
-                                CategoryId = DbUtils.GetInt(reader, "categoryId"),
-                                Location = DbUtils.GetString(reader, "location"),
-                                Description = DbUtils.GetString(reader, "description"),
-                                Price = DbUtils.GetInt(reader, "price"),
-                                DateTime = DbUtils.GetDateTime(reader, "dateTime"),
-                                Image = DbUtils.GetString(reader, "image"),
-                                Favorite = new Favorite
-                                {
-                                    Id = DbUtils.GetInt(reader, "id"),
-                                    ListingId = DbUtils.GetInt(reader, "listingId"),
-                                    UserId = DbUtils.GetInt(reader, "userId")
-                                },
-                            };
-                        }
+                            Id = DbUtils.GetInt(reader, "FavoriteId"),
+                            ListingId = DbUtils.GetInt(reader, "listingId"),
+                            UserId = DbUtils.GetInt(reader, "userId")
+                        };
+
+                        favorites.Add(favorite);
                     }
 
                     reader.Close();
-                    return listing;
                 }
             }
+
+            return favorites;
         }
 
-        public void Add(Favorite favorite)
+
+
+
+        public void Add(FavoriteAdd favorite)
         {
             using (var conn = Connection)
             {
@@ -72,18 +58,23 @@ namespace ThriftHaven.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"INSERT INTO [Favorite]
-                                            (listingId,
-                                            userId)
-                                        OUTPUT INSERTED.ID
-                                        VALUES
-                                            (@listingId,
-                                            @userId)";
+                                (listingId,
+                                userId)
+                            OUTPUT INSERTED.ID
+                            VALUES
+                                (@listingId,
+                                @userId)";
 
                     DbUtils.AddParameter(cmd, "@listingId", favorite.ListingId);
                     DbUtils.AddParameter(cmd, "@userId", favorite.UserId);
+
+                    int insertedId = (int)cmd.ExecuteScalar(); // Execute the INSERT command and get the inserted ID
+
+                    favorite.Id = insertedId; // Set the ID property of the favorite object
                 }
             }
         }
+
 
         public void Delete(int id)
         {
