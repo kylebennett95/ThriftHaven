@@ -3,21 +3,45 @@ const GetConfig = {
     headers: { "Content-Type": "application/json" },
   }
 
+const GetPostConfig = (body) => {
+  var config = {
+      body : JSON.stringify(body),
+      credentials: "include",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }
+    return config
+}
+
 
 export const GetListings = async() => {
 
     const response = await fetch(
         `https://localhost:7052/Listings/GetAll`,GetConfig);
 
-    console.log(response)
+    console.log(response, "GetListings")
     if(response.ok){
         const listings = await response.json();
         return listings;
     }else{
         return false
     }
-    
-}
+};
+
+export const GetListingById = async (id) => {
+  const response = await fetch(`https://localhost:7052/Listings/get/${id}`, GetConfig);
+
+  console.log(response);
+  if (response.ok) {
+    const listing = await response.json();
+    return [listing]; // Wrap the listing object in an array
+  } else {
+    return []; // Return an empty array if there's an error
+  }
+};
+
+
+
 
 export const AddListing = async (listingData) => {
     const response = await fetch(`https://localhost:7052/Listings`, {
@@ -28,7 +52,7 @@ export const AddListing = async (listingData) => {
       body: JSON.stringify(listingData)
     });
   
-    console.log(response);
+    console.log(response, "AddListing");
     if (response.ok) {
       const newListing = await response.json();
       return newListing;
@@ -36,12 +60,46 @@ export const AddListing = async (listingData) => {
       return false;
     }
   };
+
+  // export const EditListingById = async (id, listingData) => {
+  //   const response = await fetch(`https://localhost:7052/Listings/${id}`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(listingData)
+  //   });
+  
+  //   console.log(response, "EditListing");
+  //   if (response.ok) {
+  //     const editedListing = await response.json();
+  //     return editedListing;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+
+  export const EditListingById = async(Id, CategoryId, Location, Price, Description, Image) => {
+    const response = await fetch(
+        `https://localhost:7052/Listings/${Id}`, GetPostConfig({Id, CategoryId, Location, Price, Description, Image})
+        );
+    if(response.ok){
+        const EditListingResponse = await response.json();
+        return EditListingResponse;
+    }else {
+        return false
+    }   
+}
+  
   
 
 
 
 const API = {
-    GetListings
+    GetListings,
+    AddListing,
+    GetListingById,
+    EditListingById
 }
 
 export default API;

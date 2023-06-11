@@ -9,8 +9,8 @@ namespace ThriftHaven.Repositories
         List<Listing> GetAll();
         List<Listing> GetAllByCategoryId(string? categoryIds = null, string? searchCriterion = null);
         List<Listing> GetByCategoryId(int id);
-        Listing GetById(int id);
+        ListingEdit GetById(int id);
         List<Listing> Search(string criterion);
-        void Update(Listing listing);
+        void Update(ListingEdit listing);
     }
 }
