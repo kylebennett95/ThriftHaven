@@ -168,6 +168,53 @@ namespace ThriftHaven.Repositories
             }
         }
 
+        public List<Listing> GetAllByUserId(int userId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT
+                                    id,
+                                    userId,
+                                    categoryId,
+                                    location,
+                                    price,
+                                    description,
+                                    image,
+                                    dateTime
+                                FROM Listing
+                                WHERE userId = @userId";
+
+                    DbUtils.AddParameter(cmd, "@userId", userId);
+
+                    var reader = cmd.ExecuteReader();
+                    var listings = new List<Listing>();
+
+                    while (reader.Read())
+                    {
+                        var listing = new Listing()
+                        {
+                            Id = DbUtils.GetInt(reader, "id"),
+                            UserId = DbUtils.GetInt(reader, "userId"),
+                            CategoryId = DbUtils.GetInt(reader, "categoryId"),
+                            Location = DbUtils.GetString(reader, "location"),
+                            Price = DbUtils.GetInt(reader, "price"),
+                            Description = DbUtils.GetString(reader, "description"),
+                            Image = DbUtils.GetString(reader, "image"),
+                            DateTime = DbUtils.GetDateTime(reader, "dateTime")
+                        };
+
+                        listings.Add(listing);
+                    }
+
+                    reader.Close();
+                    return listings;
+                }
+            }
+        }
+
         public ListingEdit GetById(int id)
         {
             using (var conn = Connection)
