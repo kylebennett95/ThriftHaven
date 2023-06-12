@@ -40,6 +40,20 @@ export const GetListingById = async (id) => {
   }
 };
 
+export const GetListingsByUserId = async (userId) => {
+  const response = await fetch(`https://localhost:7052/Listings/user/${userId}`, GetConfig);
+
+  if (response.ok) {
+    const listings = await response.json();
+    return listings;
+  } else {
+    throw new Error('Failed to fetch listings');
+  }
+};
+
+
+
+
 
 
 
@@ -97,6 +111,7 @@ const API = {
     GetListings,
     AddListing,
     GetListingById,
+    GetListingsByUserId,
     EditListingById,
     DeleteListing
 }

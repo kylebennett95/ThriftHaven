@@ -33,6 +33,17 @@ namespace ThriftHaven.Controllers
             return Ok(_listingRepo.GetAllByCategoryId(categoryIds, searchCriterion));
         }
 
+        [HttpGet("user/{id}")]
+        public IActionResult GetByUserId(int id)
+        {
+            var fav = _listingRepo.GetAllByUserId(id);
+            if (fav == null)
+            {
+                return NotFound();
+            }
+            return Ok(fav);
+        }
+
         [HttpGet("get/{id}")]
         public ActionResult Get(int id) 
         {
