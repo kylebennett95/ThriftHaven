@@ -45,7 +45,7 @@ namespace ThriftHaven.Repositories
             }
         }
 
-        public User GetById(int id)
+        public EditUser GetById(int id)
         {
             using (var conn = Connection)
             {
@@ -56,24 +56,22 @@ namespace ThriftHaven.Repositories
                                         id,
 	                                    name,
 	                                    email,
-	                                    image,
-	                                    password
+	                                    image
                                     FROM [User]
                                     WHERE id = @id";
                     DbUtils.AddParameter(cmd, "@id", id);
 
                     var reader = cmd.ExecuteReader();
 
-                    User user = null;
+                    EditUser user = null;
                     if (reader.Read())
                     {
-                        user = new User()
+                        user = new EditUser()
                         {
                             Id = DbUtils.GetInt(reader, "id"),
                             Name = DbUtils.GetString(reader, "name"),
                             Email = DbUtils.GetString(reader, "email"),
-                            Image = DbUtils.GetString(reader, "image"),
-                            Password = DbUtils.GetString(reader, "password")
+                            Image = DbUtils.GetString(reader, "image")
                         };
                     }
 
@@ -112,7 +110,7 @@ namespace ThriftHaven.Repositories
             }
         }
 
-        public void Update(User user)
+        public void Update(EditUser user)
         {
             using (var conn = Connection)
             {
@@ -122,15 +120,13 @@ namespace ThriftHaven.Repositories
                     cmd.CommandText = @"UPDATE [User]
 	                                    SET name = @name,
 	                                        email = @email,
-	                                        image = @image,
-	                                        password = @password
+	                                        image = @image
                                     WHERE id = @id";
 
                     DbUtils.AddParameter(cmd, "@id", user.Id);
                     DbUtils.AddParameter(cmd, "@name", user.Name);
                     DbUtils.AddParameter(cmd, "@email", user.Email);
                     DbUtils.AddParameter(cmd, "@image", user.Image);
-                    DbUtils.AddParameter(cmd, "@password", user.Password);
 
                     cmd.ExecuteNonQuery();
                 }

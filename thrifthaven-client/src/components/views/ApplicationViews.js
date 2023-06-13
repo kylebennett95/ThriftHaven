@@ -27,7 +27,7 @@ export const ApplicationViews = () => {
             <Route path="editlisting/:id" element={<EditListing />} />
           )}
           <Route path="/listing/:id" element={<ListingPage />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
         </Routes>
       </>
     );

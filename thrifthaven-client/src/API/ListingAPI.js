@@ -76,9 +76,9 @@ export const AddListing = async (listingData) => {
   };
 
 
-  export const EditListingById = async(Id, CategoryId, Location, Price, Description, Image) => {
+  export const EditListingById = async(id, CategoryId, Location, Price, Description, Image) => {
     const response = await fetch(
-        `https://localhost:7052/Listings/${Id}`, GetPostConfig({Id, CategoryId, Location, Price, Description, Image})
+        `https://localhost:7052/Listings/${id}`, GetPostConfig({id, CategoryId, Location, Price, Description, Image})
         );
     if(response.ok){
         const EditListingResponse = await response.json();

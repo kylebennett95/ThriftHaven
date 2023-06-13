@@ -6,9 +6,9 @@ namespace ThriftHaven.Repositories
     {
         void Add(User user);
         List<User> GetAll();
-        User GetById(int id);
+        EditUser GetById(int id);
         bool isEmailAvailable(string Email);
-        void Update(User user);
+        void Update(EditUser user);
         User ValidateUser(string email);
     }
 }
