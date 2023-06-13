@@ -67,7 +67,6 @@ export const ListingPage = () => {
         <p>Price: {listing.price}</p>
         <p>Description: {listing.description}</p>
         <p>Date and Time: {listing.dateTime}</p>
-        <button onClick={handleButtonClick}>Go to Listing</button>
         <button onClick={handleAddToFavorites}>Add to Favorites</button>
         <hr />
       </div>

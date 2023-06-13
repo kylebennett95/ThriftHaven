@@ -79,7 +79,7 @@ namespace ThriftHaven.Controllers
         }
 
         [HttpPost("/EditUser/{id}")]
-        public IActionResult Put(int id, User user)
+        public IActionResult Put(int id, EditUser user)
         {
             if (id != user.Id)
             {
