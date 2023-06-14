@@ -6,6 +6,7 @@ namespace ThriftHaven.Repositories
     {
         void Add(FavoriteAdd favorite);
         void Delete(int id);
-        List<Favorite> GetFavoritesByUserId(int id);
+        List<Favorite> GetAllByUserId(int userId);
+        Favorite GetFavoritesByUserId(int id);
     }
 }

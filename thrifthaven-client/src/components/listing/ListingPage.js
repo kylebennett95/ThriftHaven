@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { GetListingById } from "../../API/ListingAPI";
 import { useParams } from "react-router-dom";
-import { AddFavorite } from "../../API/FavoriteAPI"; // Import the AddFavorite function
+import { AddingFavorite } from "../../API/FavoriteAPI"; // Import the AddFavorite function
 
 export const ListingPage = () => {
   const [listingData, setListingData] = useState(null);
   const { id } = useParams();
+
+  var appUser = localStorage.getItem("project_user");
+  var appUserObject = JSON.parse(appUser);
 
   useEffect(() => {
     const fetchListingData = async () => {
@@ -36,28 +39,38 @@ export const ListingPage = () => {
   };
 
   const handleAddToFavorites = async () => {
-    try {
-      const appUser = localStorage.getItem("project_user");
-      const appUserObject = JSON.parse(appUser);
+  let AddingBookmarkData = await AddingFavorite(appUserObject.userId, parseInt(id));
+   if(AddingBookmarkData !== false){
+   console.log(AddingBookmarkData)
+  }
+  console.log(typeof appUser)
+  console.log(appUserObject.userId, id)
+}
+
+
+  // const handleAddToFavorites = async () => {
+  //   try {
+  //     const appUser = localStorage.getItem("project_user");
+  //     const appUserObject = JSON.parse(appUser);
       
-      if (!appUserObject || !appUserObject.userId) {
-        console.log("User ID not available or in the expected format");
-        return;
-      }
+  //     if (!appUserObject || !appUserObject.userId) {
+  //       console.log("User ID not available or in the expected format");
+  //       return;
+  //     }
 
-      const userId = appUserObject.userId;
+  //     const userId = appUserObject.userId;
 
-      const favoriteData = {
-        userId: userId,
-        listingId: listing.id
-      };
+  //     const favoriteData = {
+  //       userId: userId,
+  //       listingId: listing.id
+  //     };
 
-      const newFavorite = await AddFavorite(favoriteData);
-      console.log("Added to favorites:", newFavorite);
-    } catch (error) {
-      console.log("Error adding to favorites:", error);
-    }
-  };
+  //     const newFavorite = await AddingFavorite(favoriteData);
+  //     console.log("Added to favorites:", newFavorite);
+  //   } catch (error) {
+  //     console.log("Error adding to favorites:", error);
+  //   }
+  // };
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
