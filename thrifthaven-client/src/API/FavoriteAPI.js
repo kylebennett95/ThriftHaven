@@ -32,10 +32,35 @@ export const AddFavorite = async (favoriteData) => {
       return false;
     }
   };
+
+  export const AddingFavorite = async(UserId, ListingId) => {
+    const response = await fetch(
+        `https://localhost:7052/Add`, GetPostConfig({UserId, ListingId})
+        );
+    if(response.ok){
+        const AddFavoriteResponse = await response.json();
+        return AddFavoriteResponse;
+    }else {
+        return false
+    }   
+}
+
+  export const GetFavoritesByUserId = async (userId) => {
+    const response = await fetch(`https://localhost:7052/Favorites/user/${userId}`, GetConfig);
+  
+    if (response.ok) {
+      const favorites = await response.json();
+      return favorites;
+    } else {
+      throw new Error('Failed to fetch favorites');
+    }
+  };
+  
   
   
 const API = {
-    AddFavorite
+    AddFavorite,
+    GetFavoritesByUserId
 }
 
 export default API;

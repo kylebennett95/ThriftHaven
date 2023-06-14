@@ -18,7 +18,7 @@ namespace ThriftHaven.Controllers
         [HttpGet("user/{id}")]
         public IActionResult GetByUserId(int id) 
         {
-            var fav = _favoriteRepo.GetFavoritesByUserId(id);
+            var fav = _favoriteRepo.GetAllByUserId(id);
             if (fav == null)
             {
                 return NotFound();
@@ -27,10 +27,10 @@ namespace ThriftHaven.Controllers
         }
 
         [HttpPost("/Add")]
-        public IActionResult Post(FavoriteAdd favorite)
+        public IActionResult Post([FromBody] FavoriteAdd favorite)
         {
             _favoriteRepo.Add(favorite);
-            return CreatedAtAction("Get", new { id = favorite.Id }, favorite);
+            return Created("", favorite);
         }
 
         [HttpPost("{id}")]
