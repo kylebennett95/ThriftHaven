@@ -14,7 +14,6 @@ export const ThriftHaven = () => {
         element={
           <Authorized>
             <>
-                
                 <ApplicationViews />
             </>
           </Authorized>
