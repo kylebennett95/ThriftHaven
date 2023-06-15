@@ -20,6 +20,14 @@ export const ListingCard = () => {
     fetchListingData();
   }, []);
 
+  const linkFunction = (id) => {
+    const linkTo =
+            id === userId
+              ? `/editlisting/${id}`
+              : `/listing/${id}`;
+              return linkTo
+  }
+
   console.log("Current listing data:", listingData);
 
   if (!listingData) {
@@ -29,28 +37,15 @@ export const ListingCard = () => {
   return (
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-3 gap-8 mt-8">
-        {listingData.map((listing) => {
-          const linkTo =
-            listing.userId === userId
-              ? `/editlisting/${listing.id}`
-              : `/listing/${listing.id}`;
-
-          console.log(
-            `Listing ID: ${listing.id} | Link to: ${linkTo} | UserID: ${userId} | Listing UserID: ${listing.userId}`
-          );
-          console.log("Current userId:", userId);
-          console.log("Listing userId:", listing.userId);
-
-
-          return (
+        {listingData.map((listing) => (
             <div
               key={listing.id}
               className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
-              <Link to={linkTo}>
+              <Link to={linkFunction(listing.userId)}>
                 <img
                   className="p-4 rounded-t-lg"
-                  src="/docs/images/products/apple-watch.png"
+                  src={listing.image}
                   alt="product image"
                 />
                 <div className="px-4 py-3">
@@ -58,25 +53,18 @@ export const ListingCard = () => {
                     {listing.description}
                   </h5>
                   <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-                    {listing.location}
+                    Located in: {listing.location}
                   </h5>
                   <div className="flex items-center mt-1 mb-3"></div>
                   <div className="flex items-center justify-between">
                     <span className="text-xl font-bold text-gray-900 dark:text-white">
-                      {listing.price}
+                      ${listing.price}
                     </span>
-                    <a
-                      href="#"
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                      Add to cart
-                    </a>
                   </div>
                 </div>
               </Link>
             </div>
-          );
-        })}
+        ))}
       </div>
     </div>
   );

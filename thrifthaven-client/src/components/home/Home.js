@@ -1,9 +1,19 @@
 import { useNavigate } from "react-router"
 import { ListingCard } from "./ListingCard"
+import { ref, listAll } from "firebase/storage";
+import { useEffect, useState } from "react";
+import { storage } from "../helpers/storage";
 
 export const Home = () => {
 
     const navigate = useNavigate()
+    // const [images, setImages] = useState;
+
+    useEffect(() => {
+
+    }, [] )  
+
+
 
 
 
