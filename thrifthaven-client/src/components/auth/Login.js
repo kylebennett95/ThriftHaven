@@ -49,8 +49,8 @@ export const Login = () => {
             <head>
             <link rel="stylesheet" href="index.css"></link>
             </head>
-            <body>
-              <div className="flex flex-col items-center">
+            <body className="flex justify-center items-center h-screen">              
+            <div className="flex flex-col items-center">
                 <div className="mb-6">
                   <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
                   <input type="email" id="email" 
@@ -70,10 +70,20 @@ export const Login = () => {
                 </div>
                 <div className="flex items-start mb-6">
                 </div>
-                <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                onClick={() => AuthenticatingUser()}>Submit</button>
-              </div>
-            </body>
-            </>
-      );
+                <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={() => AuthenticatingUser()}
+          >
+            Submit
+          </button>
+          <section className="mt-4">
+            <Link className="fire" to="/register">
+              Not a member yet?
+            </Link>
+          </section>
+        </div>
+      </body>
+    </>
+  );
 }      
