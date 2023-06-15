@@ -20,14 +20,6 @@ export const ListingCard = () => {
     fetchListingData();
   }, []);
 
-  const linkFunction = (id) => {
-    const linkTo =
-            id === userId
-              ? `/editlisting/${id}`
-              : `/listing/${id}`;
-              return linkTo
-  }
-
   console.log("Current listing data:", listingData);
 
   if (!listingData) {
@@ -37,12 +29,25 @@ export const ListingCard = () => {
   return (
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-3 gap-8 mt-8">
-        {listingData.map((listing) => (
+        {listingData.map((listing) => {
+          const linkTo =
+            listing.userId === userId
+              ? `/editlisting/${listing.id}`
+              : `/listing/${listing.id}`;
+
+          console.log(
+            `Listing ID: ${listing.id} | Link to: ${linkTo} | UserID: ${userId} | Listing UserID: ${listing.userId}`
+          );
+          console.log("Current userId:", userId);
+          console.log("Listing userId:", listing.userId);
+
+
+          return (
             <div
               key={listing.id}
               className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
-              <Link to={linkFunction(listing.userId)}>
+              <Link to={linkTo}>
                 <img
                   className="p-4 rounded-t-lg"
                   src={listing.image}
@@ -52,8 +57,9 @@ export const ListingCard = () => {
                   <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
                     {listing.description}
                   </h5>
+                  <br />
                   <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-                    Located in: {listing.location}
+                    Located in {listing.location}
                   </h5>
                   <div className="flex items-center mt-1 mb-3"></div>
                   <div className="flex items-center justify-between">
@@ -64,7 +70,8 @@ export const ListingCard = () => {
                 </div>
               </Link>
             </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
