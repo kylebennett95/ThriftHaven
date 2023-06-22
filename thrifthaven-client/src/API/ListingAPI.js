@@ -51,6 +51,17 @@ export const GetListingsByUserId = async (userId) => {
   }
 };
 
+export const GetListingsByCategoryId = async (categoryId) => {
+  const response = await fetch(`https://localhost:7052/Listings/category/${categoryId}`, GetConfig);
+
+  if (response.ok) {
+    const listings = await response.json();
+    return listings;
+  } else {
+    throw new Error('Failed to fetch listings');
+  }
+};
+
 
 
 
