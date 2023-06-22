@@ -98,44 +98,26 @@ namespace ThriftHaven.Repositories
             }
         }
 
-        public List<Listing> GetAllByCategoryId(string? categoryIds = null, string? searchCriterion = null)
+        public List<Listing> GetAllByCategoryId(int categoryId)
         {
             using (var conn = Connection)
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    var sql = @"SELECT
-                                    l.id,
-                                    l.userId,
-                                    l.categoryId,
-                                    l.location,
-                                    l.price,
-                                    l.description,
-                                    l.image,
-                                    l.dateTime,
-                                    c.name as categoryName
-                                FROM Listing l
-                                JOIN Category c
-                                    ON l.categoryId = c.id";
+                    cmd.CommandText = @"SELECT
+                                    id,
+                                    userId,
+                                    categoryId,
+                                    location,
+                                    price,
+                                    description,
+                                    image,
+                                    dateTime
+                                FROM Listing
+                                WHERE categoryId = @categoryId";
 
-                    if (!string.IsNullOrEmpty(categoryIds))
-                    {
-                        var ids = categoryIds.Split(',').Select(id => int.Parse(id)).ToList();
-                        var where = "WHERE l.categoryId IN ({0})";
-                        var formattedIds = string.Join(",", ids);
-                        sql += string.Format(where, formattedIds);
-                    }
-
-                    if (!string.IsNullOrEmpty(searchCriterion))
-                    {
-                        sql += "WHERE l.name LIKE @Criterion";
-                    }
-
-                    cmd.CommandText = sql;
-
-                    DbUtils.AddParameter(cmd, "@categoryId", categoryIds);
-                    DbUtils.AddParameter(cmd, "@Criterion", $"%{searchCriterion}%");
+                    DbUtils.AddParameter(cmd, "@categoryId", categoryId);
 
                     var reader = cmd.ExecuteReader();
                     var listings = new List<Listing>();
@@ -151,12 +133,7 @@ namespace ThriftHaven.Repositories
                             Price = DbUtils.GetInt(reader, "price"),
                             Description = DbUtils.GetString(reader, "description"),
                             Image = DbUtils.GetString(reader, "image"),
-                            DateTime = DbUtils.GetDateTime(reader, "dateTime"),
-                            Category = new Category()
-                            {
-                                Id = DbUtils.GetInt(reader, "categoryId"),
-                                Name = DbUtils.GetString(reader, "categoryName"),
-                            }
+                            DateTime = DbUtils.GetDateTime(reader, "dateTime")
                         };
 
                         listings.Add(listing);

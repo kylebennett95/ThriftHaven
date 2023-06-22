@@ -70,7 +70,8 @@ export const CreateListing = () => {
 
 
       return (
-        <form onSubmit={handleFormSubmit}>
+        <div className="flex justify-center items-center h-screen">
+        <form onSubmit={handleFormSubmit} className="max-w-md">
           <div className="mb-6">
             <label htmlFor="image-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
             <input
@@ -135,13 +136,16 @@ export const CreateListing = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Create Listing
-          </button>
+          <div className="mb-6 flex justify-center">
+        <button
+          type="submit"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Create Listing
+        </button>
+      </div>
         </form>
+        </div>
       );
     };
     

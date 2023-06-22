@@ -27,10 +27,10 @@ namespace ThriftHaven.Controllers
             return Ok(_listingRepo.Search(q));
         }
 
-        [HttpGet("GetAllByCategory")]
-        public ActionResult GetAllByCategoryId(string? categoryIds = null, string? searchCriterion = null) 
+        [HttpGet("category/{id}")]
+        public ActionResult GetAllByCategoryId(int id) 
         {
-            return Ok(_listingRepo.GetAllByCategoryId(categoryIds, searchCriterion));
+            return Ok(_listingRepo.GetAllByCategoryId(id));
         }
 
         [HttpGet("user/{id}")]
@@ -55,11 +55,11 @@ namespace ThriftHaven.Controllers
             return Ok(listing);
         }
 
-        [HttpGet("category/{id}")]
-        public ActionResult GetByCategoryId(int id) 
-        {
-            return Ok(_listingRepo.GetByCategoryId(id));
-        }
+        //[HttpGet("category/{id}")]
+        //public ActionResult GetByCategoryId(int id) 
+        //{
+        //    return Ok(_listingRepo.GetByCategoryId(id));
+        //}
 
         [HttpPost]
         public IActionResult Post(Listing listing)

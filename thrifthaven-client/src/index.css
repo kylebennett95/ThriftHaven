@@ -16,17 +16,6 @@ code {
     monospace;
 }
 
-/*Login page CSS
-/* html, body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
 html {
   background-color: #007BFF;
 }

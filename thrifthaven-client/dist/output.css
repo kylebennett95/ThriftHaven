@@ -20,6 +20,13 @@
   /* 2 */
 }
 
+.fixed {
+  position: fixed;
+  top: 20px; /* Adjust this value to position the button vertically */
+  right: 20px; /* Adjust this value to position the button horizontally */
+}
+
+
 ::before,
 ::after {
   --tw-content: '';
