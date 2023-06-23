@@ -6,12 +6,16 @@ import { GetListingsByCategoryId } from "../../API/ListingAPI";
 export const Bookshelves = () => {
   const navigate = useNavigate();
   const [listings, setListings] = useState([]);
-  const categoryId = 1; // Replace with the selected categoryId
+  const categoryId = 7; // Replace with the selected categoryId
 
   const fetchListings = async (categoryId) => {
     try {
       const allListings = await GetListingsByCategoryId(categoryId);
-      setListings(allListings.filter(listing => listing.categoryId === categoryId));
+      const uniqueListings = allListings.filter(
+        (listing, index, self) =>
+          self.findIndex((l) => l.categoryId === listing.categoryId) === index
+      );
+      setListings(uniqueListings);
     } catch (error) {
       console.error("Error fetching listings:", error);
       setListings([]);

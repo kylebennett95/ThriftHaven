@@ -39,53 +39,47 @@ export const ListingPage = () => {
   };
 
   const handleAddToFavorites = async () => {
-  let AddingBookmarkData = await AddingFavorite(appUserObject.userId, parseInt(id));
-   if(AddingBookmarkData !== false){
-   console.log(AddingBookmarkData)
-  }
-  console.log(typeof appUser)
-  console.log(appUserObject.userId, id)
-}
-
-
-  // const handleAddToFavorites = async () => {
-  //   try {
-  //     const appUser = localStorage.getItem("project_user");
-  //     const appUserObject = JSON.parse(appUser);
-      
-  //     if (!appUserObject || !appUserObject.userId) {
-  //       console.log("User ID not available or in the expected format");
-  //       return;
-  //     }
-
-  //     const userId = appUserObject.userId;
-
-  //     const favoriteData = {
-  //       userId: userId,
-  //       listingId: listing.id
-  //     };
-
-  //     const newFavorite = await AddingFavorite(favoriteData);
-  //     console.log("Added to favorites:", newFavorite);
-  //   } catch (error) {
-  //     console.log("Error adding to favorites:", error);
-  //   }
-  // };
+    let AddingBookmarkData = await AddingFavorite(appUserObject.userId, parseInt(id));
+    if (AddingBookmarkData !== false) {
+      console.log(AddingBookmarkData);
+    }
+    console.log(typeof appUser);
+    console.log(appUserObject.userId, id);
+  };
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-      <div key={listing.id}>
-        <img src={listing.image} alt="Listing" />
-        <h3>Location: {listing.location}</h3>
-        <p>Price: {listing.price}</p>
-        <p>Description: {listing.description}</p>
-        <p>Date and Time: {listing.dateTime}</p>
-        <button onClick={handleAddToFavorites}>Add to Favorites</button>
-        <hr />
+      <div style={{ width: "40%", display: "flex", flexDirection: "column", alignItems: "center" }} key={listing.id}>
+        <img src={listing.image} alt="Listing" style={{ margin: "0 auto" }} />
+        <br />
+        <br />
+        <p style={{ border: "1px solid black", padding: "10px", borderRadius: "5px", background: "white", width: "15%", textAlign: "center" }}>
+          ${listing.price}
+        </p>
+        <br />
+        <h3 style={{ border: "1px solid black", padding: "10px", borderRadius: "5px", background: "white", width: "30%", textAlign: "center" }}>
+          Located in {listing.location}
+        </h3>
+        <br />
+        <p style={{ border: "1px solid black", padding: "10px", borderRadius: "5px", background: "white", width: "50%", height: "120px"}}>
+          {listing.description}
+        </p>
+        <br />
+        <button
+          onClick={handleAddToFavorites}
+          className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
+        >
+          Add to Favorites
+        </button>
       </div>
     </div>
   );
 };
+
+
+
+
+
 
 
 
