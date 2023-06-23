@@ -11,7 +11,11 @@ export const Couches = () => {
   const fetchListings = async (categoryId) => {
     try {
       const allListings = await GetListingsByCategoryId(categoryId);
-      setListings(allListings.filter(listing => listing.categoryId === categoryId));
+      const uniqueListings = allListings.filter(
+        (listing, index, self) =>
+          self.findIndex((l) => l.categoryId === listing.categoryId) === index
+      );
+      setListings(uniqueListings);
     } catch (error) {
       console.error("Error fetching listings:", error);
       setListings([]);

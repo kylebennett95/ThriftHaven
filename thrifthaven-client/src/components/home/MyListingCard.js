@@ -9,29 +9,25 @@ export const MyListingCard = ({ listing }) => {
     <div className="w-1/3 p-4 inline-block">
       <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <Link to={linkTo}>
-          <img
-            className="p-4 rounded-t-lg"
-            src="/docs/images/products/apple-watch.png"
-            alt="product image"
-          />
+        <div className="flex justify-center items-center">
+        <img
+          className="p-4 rounded-t-lg"
+          src={listing.image}
+          alt="product image"
+        />
+        </div>
           <div className="px-4 py-3">
-            <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="flex justify-center items-center text-lg font-semibold tracking-tight text-gray-900 dark:text-white break-words">
               {listing.description}
             </h5>
-            <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-              {listing.location}
+            <h5 className="flex justify-center items-center text-lg font-semibold tracking-tight text-gray-900 dark:text-white break-words">
+            Located in {listing.location}
             </h5>
             <div className="flex items-center mt-1 mb-3"></div>
-            <div className="flex items-center justify-between">
+            <div className="flex justify-center items-center">
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                {listing.price}
+                ${listing.price}
               </span>
-              <a
-                href="#"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Add to cart
-              </a>
             </div>
           </div>
         </Link>

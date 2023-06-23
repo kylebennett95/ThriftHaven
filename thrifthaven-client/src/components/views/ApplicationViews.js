@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { NavBar } from "../nav/NavBar";
 import { Home } from "../home/Home";
 import { Favorites } from "../favorites/Favorites";
@@ -20,6 +20,11 @@ import { Beds } from "../categories/Beds";
 export const ApplicationViews = () => {
     const localUser = localStorage.getItem("project_user");
     const currentUser = JSON.parse(localUser);
+    const navigate = useNavigate();
+
+    const handleTabClick = (tabUrl) => {
+      navigate(tabUrl);
+    };
   
     return (
       <>
@@ -34,7 +39,7 @@ export const ApplicationViews = () => {
           {currentUser && (
             <Route path="editlisting/:id" element={<EditListing />} />
           )}
-          <Route path="/listing/:id" element={<ListingPage />} />
+          <Route path="/listing/:id" element={<ListingPage handleTabClick={handleTabClick}  />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/listings/1" element={<Couches /> } />
           <Route path="/listings/2" element={<Dressers /> } />
